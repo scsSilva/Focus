@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Play } from "phosphor-react";
+import { HandPalm, Play } from "phosphor-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as zod from "zod";
@@ -18,6 +18,7 @@ interface Cycle {
   task: string;
   minutesAmount: number;
   startDate: Date;
+  interruptDate?: Date;
 }
 
 const Home = () => {
@@ -75,6 +76,20 @@ const Home = () => {
     reset();
   };
 
+  const handleInterruptCycle = () => {
+    setCycles(
+      cycles.map((cycle) => {
+        if (cycle.id === activeCycleId) {
+          return { ...cycle, interruptDate: new Date() };
+        } else {
+          return cycle;
+        }
+      })
+    );
+
+    setActiveCycleId(null);
+  };
+
   useEffect(() => {
     if (activeCycle) {
       document.title = `${minutes}:${seconds}`;
@@ -93,6 +108,7 @@ const Home = () => {
             id="task"
             placeholder="Dê um nome para o seu projeto"
             list="task-suggestions"
+            disabled={!!activeCycle}
             {...register("task")}
           />
 
@@ -109,6 +125,7 @@ const Home = () => {
             type="number"
             id="minutesAmount"
             placeholder="00"
+            disabled={!!activeCycle}
             step={5}
             {...register("minutesAmount", { valueAsNumber: true })}
           />
@@ -124,10 +141,23 @@ const Home = () => {
           <span>{seconds[1]}</span>
         </Styles.CountdownContainer>
 
-        <Styles.StartCountdownButton type="submit" disabled={isSubmitDisabled}>
-          <Play size={24} />
-          Começar
-        </Styles.StartCountdownButton>
+        {activeCycle ? (
+          <Styles.StopCountdownButton
+            onClick={handleInterruptCycle}
+            type="button"
+          >
+            <HandPalm size={24} />
+            Interromper
+          </Styles.StopCountdownButton>
+        ) : (
+          <Styles.StartCountdownButton
+            type="submit"
+            disabled={isSubmitDisabled}
+          >
+            <Play size={24} />
+            Começar
+          </Styles.StartCountdownButton>
+        )}
       </form>
     </Styles.Container>
   );
