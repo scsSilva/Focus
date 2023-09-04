@@ -75,6 +75,12 @@ const Home = () => {
     reset();
   };
 
+  useEffect(() => {
+    if (activeCycle) {
+      document.title = `${minutes}:${seconds}`;
+    }
+  }, [minutes, seconds]);
+
   const task = watch("task");
   const isSubmitDisabled = !task;
 
