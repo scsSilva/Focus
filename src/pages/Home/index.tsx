@@ -8,7 +8,7 @@ import * as Styles from "./styles";
 
 const newCycleFormValidationSchema = zod.object({
   task: zod.string().min(1, "Informe a tarefa"),
-  minutesAmount: zod.number().min(5).max(60),
+  minutesAmount: zod.number().min(1).max(60),
 });
 
 type NewCycleFormData = zod.infer<typeof newCycleFormValidationSchema>;
@@ -19,6 +19,7 @@ interface Cycle {
   minutesAmount: number;
   startDate: Date;
   interruptDate?: Date;
+  finishedDate?: Date;
 }
 
 const Home = () => {
@@ -50,16 +51,34 @@ const Home = () => {
 
     if (activeCycle) {
       interval = setInterval(() => {
-        setAmountSecondsPassed(
-          differenceInSeconds(new Date(), activeCycle.startDate)
+        const secondsDifference = differenceInSeconds(
+          new Date(),
+          activeCycle.startDate
         );
+
+        if (secondsDifference >= totalSeconds) {
+          setCycles((prevState) =>
+            prevState.map((cycle) => {
+              if (cycle.id === activeCycleId) {
+                return { ...cycle, finishedDate: new Date() };
+              } else {
+                return cycle;
+              }
+            })
+          );
+
+          setAmountSecondsPassed(totalSeconds);
+          clearInterval(interval);
+        } else {
+          setAmountSecondsPassed(secondsDifference);
+        }
       }, 1000);
     }
 
     return () => {
       clearInterval(interval);
     };
-  }, [activeCycle]);
+  }, [activeCycle, totalSeconds, activeCycle]);
 
   const handleCreateNewCycle = (data: NewCycleFormData) => {
     const newCycle: Cycle = {
@@ -77,8 +96,8 @@ const Home = () => {
   };
 
   const handleInterruptCycle = () => {
-    setCycles(
-      cycles.map((cycle) => {
+    setCycles((prevState) =>
+      prevState.map((cycle) => {
         if (cycle.id === activeCycleId) {
           return { ...cycle, interruptDate: new Date() };
         } else {
@@ -127,6 +146,8 @@ const Home = () => {
             placeholder="00"
             disabled={!!activeCycle}
             step={5}
+            min={1}
+            max={60}
             {...register("minutesAmount", { valueAsNumber: true })}
           />
 
