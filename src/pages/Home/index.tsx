@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Circle, Play } from "phosphor-react";
+import { Play } from "phosphor-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as zod from "zod";
@@ -45,13 +45,19 @@ const Home = () => {
   const seconds = String(secondsAmount).padStart(2, "0");
 
   useEffect(() => {
+    let interval: number;
+
     if (activeCycle) {
-      setInterval(() => {
+      interval = setInterval(() => {
         setAmountSecondsPassed(
           differenceInSeconds(new Date(), activeCycle.startDate)
         );
       }, 1000);
     }
+
+    return () => {
+      clearInterval(interval);
+    };
   }, [activeCycle]);
 
   const handleCreateNewCycle = (data: NewCycleFormData) => {
@@ -64,6 +70,7 @@ const Home = () => {
 
     setCycles((prevState) => [...prevState, newCycle]);
     setActiveCycleId(newCycle.id);
+    setAmountSecondsPassed(0);
 
     reset();
   };
