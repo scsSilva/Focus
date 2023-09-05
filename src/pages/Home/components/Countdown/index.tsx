@@ -60,11 +60,17 @@ const Countdown = () => {
 
   return (
     <Styles.CountdownContainer>
-      <span>{minutes[0]}</span>
-      <span>{minutes[1]}</span>
+      <div>
+        <span>{minutes[0]}</span>
+        <span>{minutes[1]}</span>
+      </div>
+
       <Styles.Separator>:</Styles.Separator>
-      <span>{seconds[0]}</span>
-      <span>{seconds[1]}</span>
+
+      <div>
+        <span>{seconds[0]}</span>
+        <span>{seconds[1]}</span>
+      </div>
     </Styles.CountdownContainer>
   );
 };

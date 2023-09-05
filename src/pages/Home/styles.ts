@@ -12,6 +12,10 @@ export const Container = styled.main`
     flex-direction: column;
     align-items: center;
     gap: 3.5rem;
+
+    @media (max-width: 700px) {
+      width: 100%;
+    }
   }
 `;
 
