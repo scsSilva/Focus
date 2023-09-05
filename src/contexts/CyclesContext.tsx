@@ -50,16 +50,13 @@ export function CyclesContextProvider({
       if (storedStateAsJSON) {
         return JSON.parse(storedStateAsJSON);
       }
+
+      return {
+        cycles: [],
+        activeCycleId: null,
+      };
     }
   );
-
-  const [amountSecondsPassed, setAmountSecondsPassed] = useState<number>(() => {
-    if (activeCycle) {
-      return differenceInSeconds(new Date(), new Date(activeCycle?.startDate));
-    }
-
-    return 0;
-  });
 
   useEffect(() => {
     const state = JSON.stringify(cyclesState);
@@ -68,6 +65,14 @@ export function CyclesContextProvider({
 
   const { cycles, activeCycleId } = cyclesState;
   const activeCycle = cycles.find((cycle) => cycle.id === activeCycleId);
+
+  const [amountSecondsPassed, setAmountSecondsPassed] = useState<number>(() => {
+    if (activeCycle) {
+      return differenceInSeconds(new Date(), new Date(activeCycle?.startDate));
+    }
+
+    return 0;
+  });
 
   const setSecondsPassed = (seconds: number) => {
     setAmountSecondsPassed(seconds);
