@@ -24,7 +24,7 @@ const History = () => {
           <tbody>
             {cycles.map((cycle) => {
               return (
-                <tr>
+                <tr key={cycle.id}>
                   <td>{cycle.task}</td>
                   <td>{cycle.minutesAmount} minutos</td>
                   <td>
