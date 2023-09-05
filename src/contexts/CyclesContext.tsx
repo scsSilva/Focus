@@ -53,9 +53,6 @@ export function CyclesContextProvider({
     }
   );
 
-  const { cycles, activeCycleId } = cyclesState;
-  const activeCycle = cycles.find((cycle) => cycle.id === activeCycleId);
-
   const [amountSecondsPassed, setAmountSecondsPassed] = useState<number>(() => {
     if (activeCycle) {
       return differenceInSeconds(new Date(), new Date(activeCycle?.startDate));
@@ -68,6 +65,9 @@ export function CyclesContextProvider({
     const state = JSON.stringify(cyclesState);
     localStorage.setItem("@focus:cycles-state", state);
   }, [cyclesState]);
+
+  const { cycles, activeCycleId } = cyclesState;
+  const activeCycle = cycles.find((cycle) => cycle.id === activeCycleId);
 
   const setSecondsPassed = (seconds: number) => {
     setAmountSecondsPassed(seconds);
