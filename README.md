@@ -24,7 +24,7 @@ Antes de executar a aplicação (caso queira criar sua própria versão), atente
 
 ## Executando o Projeto
 
-Para acessar o projeto, basta clicar <a href="https://focus-ashen.vercel.app/">aqui</a>.
+Para acessar o projeto, basta clicar <a target="_blank" href="https://focus-ashen.vercel.app/">aqui</a>.
 
 Agora, caso queira personalizar e criar sua própria versão, siga estas etapas:
 
