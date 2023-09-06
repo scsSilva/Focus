@@ -2,13 +2,19 @@ import { styled } from "styled-components";
 
 export const Container = styled.main`
   flex: 1;
+  /* background-color: red; */
   padding: 3.5rem;
   display: flex;
   flex-direction: column;
+  max-height: 100%;
 
   h1 {
     font-size: 1.5rem;
     color: ${(props) => props.theme["gray-100"]};
+  }
+
+  @media (max-width: 900px) {
+    padding: 3.5rem 0;
   }
 `;
 
